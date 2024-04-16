@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Upload Photo</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <!-- CSRF токен для защиты от CSRF атак -->
+        {{ form.csrf_token }}
+
+        <!-- Поле ввода имени файла -->
+        <label for="filename">Filename:</label>
+        {{ form.filename(class="form-control") }}
+
+        <!-- Поле выбора файла -->
+        <label for="photo">Choose a photo:</label>
+        {{ form.photo(class="form-control-file") }}
+
+        <!-- Кнопка отправки формы -->
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+{% endblock %}
