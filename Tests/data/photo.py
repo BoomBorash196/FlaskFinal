@@ -7,6 +7,7 @@ class Photo(SqlAlchemyBase):
     __tablename__ = 'photos'
     id = Column(Integer, primary_key=True, autoincrement=True)
     filename = Column(String, nullable=False)
+    filename_show = Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
 
     # Добавьте параметр back_populates для связи с моделью User

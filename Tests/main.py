@@ -151,7 +151,13 @@ def register():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-# загрузка фото
+# Функция для получения всех фотографий из базы данных
+def get_all_photos():
+    db_sess = db_session.create_session()
+    return db_sess.query(Photo).all()
+
+
+# Загрузка фото
 @app.route('/upload_photo', methods=['GET', 'POST'])
 @login_required
 def upload_photo():
@@ -160,15 +166,25 @@ def upload_photo():
         db_sess = db_session.create_session()
         photo = Photo()
         file = form.photo.data
-        filename = form.filename.data
-        file.save(os.path.join('uploads', filename))  # Предположим, что папка 'uploads' существует
+        filename_show = form.filename.data
+        filename = secure_filename(file.filename)
+        file.save(os.path.join('static/uploads', filename))  # Предположим, что папка 'uploads' существует
+        photo.filename_show = filename_show
         photo.filename = filename
         photo.user = current_user
-        current_user.photos.append(photo)  # Используем свойство photos, а не news
+        current_user.photos.append(photo)
         db_sess.merge(current_user)
         db_sess.commit()
-        return 'Photo uploaded successfully!'
+        # После успешной загрузки, перенаправляем пользователя на страницу с галереей фотографий
+        return redirect(url_for('gallery'))
     return render_template('arts.html', form=form)
+
+
+# Страница с галереей фотографий
+@app.route('/gallery')
+def gallery():
+    photos = get_all_photos()  # Получаем все фотографии из базы данных
+    return render_template('gallery.html', photos=photos)  # Передаем фотографии в шаблон
 
 
 
