@@ -16,7 +16,7 @@ app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'secret_key'
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'static/img'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -24,7 +24,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def main():
     db_session.global_init("db/test.db")
-
     app.run(debug=True)
 
 
@@ -168,7 +167,7 @@ def upload_photo():
         file = form.photo.data
         filename_show = form.filename.data
         filename = secure_filename(file.filename)
-        file.save(os.path.join('static/uploads', filename))  # Предположим, что папка 'uploads' существует
+        file.save(os.path.join('static/img', filename))  # Предположим, что папка 'uploads' существует
         photo.filename_show = filename_show
         photo.filename = filename
         photo.user = current_user

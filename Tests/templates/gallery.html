@@ -20,7 +20,7 @@
 <div class="gallery">
   {% for photo in photos %}
   <div class="image">
-    <img src="uploads/photo1.jpg">
+    <img src="static/img/{{ photo.filename }}" alt="{{ photo.filename_show }}">
   </div>
   {% endfor %}
 </div>
