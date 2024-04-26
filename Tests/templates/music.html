@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<title>Музыка</title>
+<body>
+    <h2>Музыкальная коллекция</h2>
+    {% for music in musics %}
+            <p> "{{ music.filename }}" </p>
+            <audio controls loop>
+                <source src="static/files/{{ music.filepath }}" type="audio/mpeg">
+                <p>формат не поддерживается браузером</p>
+            </audio>
+            <p></p>
+            <a class="btn btn-primary" href="static/files/{{ music.filepath }}" download="{{ music.filename }}">скачать "{{ music.filename }}"</a>
+            <p></p>
+    {% endfor %}
+</body>
+{% endblock %}
+</html>

@@ -1,28 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo Gallery</title>
+{% extends "base.html" %}
+
+{% block content %}
+<title>Галлерея</title>
 <style>
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 20px;
-  }
-  .image {
-    width: 100%;
-    height: auto;
-  }
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px; /* Увеличенный промежуток между изображениями */
+}
+
+.grid-item {
+  overflow: hidden; /* Обрезаем изображения, чтобы они не выходили за рамки */
+}
+
+.grid-item img {
+  width: 100%; /* Изображение занимает всю ширину контейнера */
+  height: auto; /* Высота изменяется пропорционально */
+}
+
 </style>
-</head>
 <body>
-<div class="gallery">
+
+<h2>Галлерея<h2>
+<div class="grid-container">
   {% for photo in photos %}
-  <div class="image">
-    <img src="static/img/{{ photo.filename }}" alt="{{ photo.filename_show }}">
+  <div class="grid-container grid-item img">
+      <img src="static/files/{{ photo.filename }}" alt="{{ photo.filename_show }}">
+      <p> {{photo.filename_show}} </p>
   </div>
   {% endfor %}
 </div>
 </body>
-</html>
+{% endblock %}

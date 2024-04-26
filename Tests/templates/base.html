@@ -20,13 +20,20 @@
                 <p>
                     <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
                     <a class="btn btn-success" href="/login">Войти</a>
+
                 </p>
+
             {% endif %}
             {% if current_user.is_authenticated %}
                 <div style="margin-left: 10px auto;">
                     <a href="/news" class="btn btn-secondary">Добавить новость</a>
-                <a href="/upload_photo" class="btn btn-secondary">Добавить арт</a>
+                    <a href="/upload_photo" class="btn btn-secondary">Добавить картинку</a>
+                    <a href="/music_upload" class="btn btn-secondary">Добавить музыку</a>
+                    <a href="/" class="btn btn-success">Новости</a>
+                    <a href="/gallery" class="btn btn-success">Арты</a>
+                    <a href="/music" class="btn btn-success">Музыка</a>
                 </div>
+
             {% endif %}
         </nav>
     </nav>

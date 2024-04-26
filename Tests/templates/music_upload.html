@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<title>Загрузить музыку</title>
+<h1>Загрузить музыку</h1>
+<form method="POST" enctype="multipart/form-data">
+    <!-- CSRF токен для защиты от CSRF атак -->
+    {{ form.csrf_token }}
+
+    <!-- Поле ввода имени файла -->
+    <label for="filename">Имя файла:</label>
+    {{ form.filename(class="form-control") }}
+
+    <!-- Поле выбора файла -->
+    <label for="photo">Выберите музыку (имя в англоязычной раскладке):</label>
+    {{ form.music_file(class="form-control-file") }}
+    
+    <!-- Кнопка отправки формы -->
+    <button type="submit" class="btn btn-primary">Загрузить на сайт</button>
+</form>
+</body>
+{% endblock %}

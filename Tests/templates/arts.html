@@ -1,20 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Upload Photo</h1>
+<title>Загрузить фотографию</title>
+<h1>Загрузить фотографию</h1>
     <form method="POST" enctype="multipart/form-data">
         <!-- CSRF токен для защиты от CSRF атак -->
         {{ form.csrf_token }}
 
         <!-- Поле ввода имени файла -->
-        <label for="filename">Filename:</label>
+        <label for="filename">Имя файла:</label>
         {{ form.filename(class="form-control") }}
 
         <!-- Поле выбора файла -->
-        <label for="photo">Choose a photo:</label>
+        <label for="photo">Выберите фото:</label>
         {{ form.photo(class="form-control-file") }}
 
         <!-- Кнопка отправки формы -->
-        <button type="submit" class="btn btn-primary">Upload</button>
+        <button type="submit" class="btn btn-primary">Загрузить на сайт</button>
     </form>
 {% endblock %}

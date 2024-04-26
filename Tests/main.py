@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request, abort
 import os
 from werkzeug.utils import secure_filename
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+
+from data.music import Music
 from data import db_session
 from data.users import User
 from data.news import News
@@ -10,14 +12,15 @@ from forms.userform import RegisterForm
 from forms.loginform import LoginForm
 from forms.newsform import NewsForm
 from forms.artform import ImageForm
+from forms.musicform import MusicForm
 
 
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'secret_key'
-UPLOAD_FOLDER = 'static/img'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = 'static/files'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp3'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -156,6 +159,13 @@ def get_all_photos():
     return db_sess.query(Photo).all()
 
 
+# Страница с галереей фотографий
+@app.route('/gallery')
+def gallery():
+    photos = get_all_photos()  # Получаем все фотографии из базы данных
+    return render_template('gallery.html', photos=photos)  # Передаем фотографии в шаблон
+
+
 # Загрузка фото
 @app.route('/upload_photo', methods=['GET', 'POST'])
 @login_required
@@ -167,7 +177,7 @@ def upload_photo():
         file = form.photo.data
         filename_show = form.filename.data
         filename = secure_filename(file.filename)
-        file.save(os.path.join('static/img', filename))  # Предположим, что папка 'uploads' существует
+        file.save(os.path.join('static/files', filename))  # Предположим, что папка 'uploads' существует
         photo.filename_show = filename_show
         photo.filename = filename
         photo.user = current_user
@@ -179,14 +189,33 @@ def upload_photo():
     return render_template('arts.html', form=form)
 
 
-# Страница с галереей фотографий
-@app.route('/gallery')
-def gallery():
-    photos = get_all_photos()  # Получаем все фотографии из базы данных
-    return render_template('gallery.html', photos=photos)  # Передаем фотографии в шаблон
+@app.route('/music')
+def music():
+    musics = db_session.create_session().query(Music).all()
+    return render_template('music.html', musics=musics)
 
 
-
+@app.route('/music_upload', methods=['GET', 'POST'])
+@login_required
+def music_upload():
+    form = MusicForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        music = Music()
+        file = form.music_file.data
+        filename = form.filename.data
+        print(file.filename)
+        print(secure_filename(file.filename))
+        filepath = secure_filename(file.filename)
+        file.save(os.path.join('static/files', filepath))
+        music.filename = filename
+        music.filepath = filepath
+        music.user = current_user
+        current_user.musics.append(music)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect(url_for('music'))
+    return render_template('music_upload.html', form=form)
 
 
 if __name__ == '__main__':

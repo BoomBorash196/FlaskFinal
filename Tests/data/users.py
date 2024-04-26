@@ -20,6 +20,7 @@ class User(SqlAlchemyBase, UserMixin):
                                      default=datetime.datetime.now)
     news = orm.relationship("News", back_populates='user')
     photos = orm.relationship('Photo', back_populates='user')
+    musics = orm.relationship('Music', back_populates='user')
 
     def __repr__(self):
         return f"<User({self.id} {self.name} {self.email})>"
